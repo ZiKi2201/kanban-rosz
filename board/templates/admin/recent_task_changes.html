@@ -1,0 +1,60 @@
+{% load i18n %}
+{% if recent_tasks %}
+<div class="module" id="recent-task-changes">
+  <h2>Недавно изменённые задачи</h2>
+  <table>
+    <tbody>
+      {% for task in recent_tasks %}
+      <tr>
+        <th scope="row">
+          <a href="{% url 'admin:board_task_change' task.pk %}?_viewonly=1">{{ task.name|truncatechars:60 }}</a>
+        </th>
+        <td>{{ task.boardName }}</td>
+        <td>{{ task.last_api_update }}</td>
+        <td class="recent-task-changes__dismiss-cell">
+          <form method="post" action="{% url 'admin:board_task_dismiss_recent_change' task.pk %}">
+            {% csrf_token %}
+            <button type="submit" class="recent-task-changes__dismiss" title="Скрыть из списка" aria-label="Скрыть из списка">×</button>
+          </form>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+<style>
+  #recent-task-changes table {
+    table-layout: auto;
+  }
+  .recent-task-changes__dismiss-cell {
+    width: 1%;
+    text-align: right;
+    vertical-align: middle;
+  }
+  .recent-task-changes__dismiss-cell form {
+    margin: 0;
+  }
+  .recent-task-changes__dismiss {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 24px;
+    height: 24px;
+    padding: 0;
+    border: none;
+    border-radius: 50%;
+    background: transparent;
+    color: var(--body-quiet-color, #666);
+    font-size: 16px;
+    line-height: 1;
+    cursor: pointer;
+    transition: background-color 0.15s ease, color 0.15s ease;
+  }
+  .recent-task-changes__dismiss:hover,
+  .recent-task-changes__dismiss:focus {
+    background-color: var(--delete-button-hover-bg, #ba2121);
+    color: #fff;
+    outline: none;
+  }
+</style>
+{% endif %}

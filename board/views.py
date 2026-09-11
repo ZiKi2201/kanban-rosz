@@ -1,8 +1,11 @@
+
+
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import AuthenticationForm
 from django.shortcuts import redirect, render
+from django.utils import timezone
 from django.utils.formats import localize
 
 from .forms import NewUserForm
@@ -15,9 +18,21 @@ def home(request):
     for t in t_list:
         t_dict = {
             'uuid': str(t.uuid),
-            'name': t.name if t.name is not None else 'Без названия',
+            'name': t.name if t.name is not None else 'Отсутствует',
             'boardName': t.boardName,
-            'date': str(localize(t.date))
+            'date': str(localize(t.date)),
+            'date_end': str(localize(t.date_end)) if t.date_end is not None else 'Отсутствует' ,
+            'chief': t.chief.username if t.chief is not None else ' ',
+            'date_update': str(localize(t.date_update)) if t.date_update is not None else 'Отсутствует',
+            'comment': t.comment if t.comment is not None else 'Отсутствует',
+            'attachments': [
+                {
+                    'id': a.id,
+                    'url': request.build_absolute_uri(a.file.url),
+                    'original_filename': a.original_filename,
+                }
+                for a in t.attachments.all()
+            ],
         }
         all_tasks.append(t_dict)
     return render(request, 'index.html', {'tasks': all_tasks})
