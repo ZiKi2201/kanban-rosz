@@ -8,6 +8,7 @@ exclude =
     local_settings.py,
     */migrations/*,
     apps.py
-    venv/
+    .venv/
 max-complexity = 10
+max-line-length = 99
 inline-quotes = '

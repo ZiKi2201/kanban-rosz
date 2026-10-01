@@ -12,7 +12,10 @@ class TaskAttachmentSerializer(serializers.ModelSerializer):
         model = TaskAttachment
         fields = ('id', 'task', 'file', 'url', 'original_filename', 'uploaded_at')
         read_only_fields = ('original_filename', 'uploaded_at')
-        extra_kwargs = {'file': {'write_only': True}, 'task': {'write_only': True, 'required': False}}
+        extra_kwargs = {
+            'file': {'write_only': True},
+            'task': {'write_only': True, 'required': False},
+        }
 
 
 class TaskSerializer(serializers.ModelSerializer):
@@ -21,8 +24,10 @@ class TaskSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Task
-        fields = ('uuid', 'name', 'boardName', 'date', 'owner', 'date_update', 'date_end', 'chief', 'comment',
-                  'attachments')
+        fields = (
+            'uuid', 'name', 'boardName', 'date', 'owner', 'date_update', 'date_end', 'chief',
+            'comment', 'attachments',
+        )
 
 
 class UserSerializer(serializers.ModelSerializer):

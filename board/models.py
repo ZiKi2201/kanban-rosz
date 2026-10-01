@@ -1,12 +1,10 @@
 import os
 import uuid
 
-from django.contrib import auth
 from django.core.exceptions import ValidationError
 from django.db import models
 from django.db.models.signals import post_delete
 from django.dispatch import receiver
-from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
 
 MAX_ATTACHMENT_SIZE = 20 * 1024 * 1024
@@ -35,7 +33,7 @@ class Task(models.Model):
         Review = 'На проверке', _('На проверке')
         Done = 'Выполнено', _('Выполнено')
     chief = models.ForeignKey('auth.User', on_delete=models.RESTRICT, null=True,
-                         verbose_name='Руководитель', related_name='chief')
+                              verbose_name='Руководитель', related_name='chief')
     owner = models.ManyToManyField('auth.User',
                                    related_name='tasks', verbose_name='Исполнители',)
     uuid = models.UUIDField(default=uuid.uuid4, unique=True, primary_key=True,
@@ -95,5 +93,7 @@ class TaskChangeDismissal(models.Model):
 
     class Meta:
         constraints = [
-            models.UniqueConstraint(fields=['user', 'task'], name='unique_task_dismissal_per_user'),
+            models.UniqueConstraint(
+                fields=['user', 'task'], name='unique_task_dismissal_per_user',
+            ),
         ]

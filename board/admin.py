@@ -41,8 +41,10 @@ class TaskAttachmentInline(admin.TabularInline):
 
 class TaskAdmin(admin.ModelAdmin):
     inlines = (TaskAttachmentInline,)
-    list_display = ('edit_link', 'task_link', 'get_owner', 'chief', 'boardName', 'date_end', 'date_update', 'date',
-                    'comment')
+    list_display = (
+        'edit_link', 'task_link', 'get_owner', 'chief', 'boardName', 'date_end', 'date_update',
+        'date', 'comment',
+    )
     list_display_links = None
     exclude = ('last_api_update',)
     filter_horizontal = ('owner',)
@@ -52,7 +54,9 @@ class TaskAdmin(admin.ModelAdmin):
         css = {'all': ('admin/css/task_admin.css',)}
 
     def edit_link(self, obj):
-        return format_html('<a href="{}" class="task-edit-icon" title="Изменить">✎</a>', f'{obj.pk}/change/')
+        return format_html(
+            '<a href="{}" class="task-edit-icon" title="Изменить">✎</a>', f'{obj.pk}/change/',
+        )
 
     edit_link.short_description = ''
 
@@ -80,8 +84,11 @@ class TaskAdmin(admin.ModelAdmin):
 
     def get_urls(self):
         custom_urls = [
-            path('<uuid:task_id>/dismiss-recent-change/', self.admin_site.admin_view(self.dismiss_recent_change),
-                name='board_task_dismiss_recent_change'),
+            path(
+                '<uuid:task_id>/dismiss-recent-change/',
+                self.admin_site.admin_view(self.dismiss_recent_change),
+                name='board_task_dismiss_recent_change',
+            ),
         ]
         return custom_urls + super().get_urls()
 
@@ -101,8 +108,9 @@ class TaskAdmin(admin.ModelAdmin):
 
     get_owner.short_description = 'Исполнители'
 
+
 admin.site.register(Task, TaskAdmin)
 
-admin.site.site_header = "ГБУ РО «Ростовоблстройзаказчик»"
+admin.site.site_header = 'ГБУ РО «Ростовоблстройзаказчик»'
 
-admin.site.site_title = "ГБУ РО «Ростовоблстройзаказчик»"
+admin.site.site_title = 'ГБУ РО «Ростовоблстройзаказчик»'
