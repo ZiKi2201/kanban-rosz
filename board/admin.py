@@ -42,23 +42,13 @@ class TaskAttachmentInline(admin.TabularInline):
 class TaskAdmin(admin.ModelAdmin):
     inlines = (TaskAttachmentInline,)
     list_display = (
-        'edit_link', 'task_link', 'get_owner', 'chief', 'boardName', 'date_end', 'date_update',
-        'date', 'comment',
+        'task_link', 'get_owner', 'chief', 'boardName', 'date_end', 'date_update', 'date',
+        'comment',
     )
     list_display_links = None
     exclude = ('last_api_update',)
     filter_horizontal = ('owner',)
     search_fields = ('name', 'owner__username', 'chief__username')
-
-    class Media:
-        css = {'all': ('admin/css/task_admin.css',)}
-
-    def edit_link(self, obj):
-        return format_html(
-            '<a href="{}" class="task-edit-icon" title="Изменить">✎</a>', f'{obj.pk}/change/',
-        )
-
-    edit_link.short_description = ''
 
     def task_link(self, obj):
         return format_html('<a href="{}?_viewonly=1">{}</a>', f'{obj.pk}/change/', obj.name)
